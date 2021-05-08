@@ -38,24 +38,23 @@ public class RuntimeSvg : MonoBehaviour
     void GenerateMesh(Vector2[] path, bool closed)
     {
         mesh = new Mesh();
-        var vertsUvs = path.Select((p, idx) =>
+        var verts = path.Select((p, idx) =>
         {
             var v3 = (Vector3)p;
             v3.z = 100;
-            var uv = new Vector2(idx / (closed ? path.Length : path.Length - 1f), 1f);
-            return (vert: v3, uv: uv);
+            return v3;
         });
         var vertList = new List<Vector3> { Vector3.zero };
-        vertList.AddRange(vertsUvs.Select(vu => vu.vert));
+        vertList.AddRange(verts.Select(v => v));
+        if (closed) vertList.Add(vertList[1]);
         var uvList = new List<Vector2> { Vector2.zero };
-        uvList.AddRange(vertsUvs.Select(vu => vu.uv));
-        var indeces = Enumerable.Range(0, path.Length).SelectMany(i =>
-        {
-            if (i == path.Length - 1 && !closed)
-                return new[] { -1 };
-            else
-                return new[] { 0, i + 1, (i + 1) % path.Length + 1 };
-        }).Where(i => -1 < i).ToList();
+        uvList.AddRange(
+            Enumerable.Range(0, vertList.Count - 1)
+            .Select(idx => new Vector2((float)idx / (vertList.Count - 2), 1f))
+            );
+        var indeces = Enumerable.Range(0, vertList.Count - 2)
+            .SelectMany(i => new[] { 0, i + 1, (i + 2) })
+            .ToList();
         mesh.SetVertices(vertList);
         mesh.SetUVs(0, uvList);
         mesh.SetIndices(indeces, MeshTopology.Triangles, 0);
