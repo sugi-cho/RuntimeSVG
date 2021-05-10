@@ -113,14 +113,14 @@ public class RuntimeSvg : MonoBehaviour
             var idx0 = vertList.Count;
             var x0 = uvList.Last().x;
             var x1 = (path.Length - 1f) / strokeCount;
-            vertList.AddRange(path.Select(v2 => new Vector3(v2.x, v2.y, 100)));
+            vertList.AddRange(path.Select(v2 => new Vector3(v2.x, v2.y, 300)));
             uvList.AddRange(
                 Enumerable.Range(0, path.Length)
                 .Select(idx => new Vector2(Mathf.Lerp(x0, x1, idx / (path.Length - 1f)), 1f))
             );
             idxList.AddRange(
                 Enumerable.Range(0, path.Length - 1)
-                .SelectMany(i => new[] { 0, idx0 + i, idx0 + i + 1 })
+                .SelectMany(i => new[] { 0, idx0 + i + 1, idx0 + i })
             );
         }
         pathes.ForEach(p => AddPath(p));
