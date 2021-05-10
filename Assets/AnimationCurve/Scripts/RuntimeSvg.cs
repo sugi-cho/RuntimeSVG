@@ -39,7 +39,7 @@ public class RuntimeSvg : MonoBehaviour
         tessellateOptions.MaxCordDeviation = maxCord;
         tessellateOptions.MaxTanAngleDeviation = maxTangent;
         tessellateOptions.SamplingStepSize = 1.0f / (float)samplingStepDist;
-        tessellateOptions.StepDistance = stepDist;
+        tessellateOptions.StepDistance = 1f;
 
         pathProperties = new PathProperties { Corners = PathCorner.Tipped, Head = PathEnding.Chop, Tail = PathEnding.Chop, Stroke = new Stroke { Color = Color.white } };
 
