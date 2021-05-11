@@ -194,6 +194,12 @@
       "dependencies": {},
       "url": "https://upm-packages.dev"
     },
+    "sugi.subgraph": {
+      "version": "file:C:/Users/sugi-cho/source/repos/sugi-cho/AnimationCurve/Unity-ShaderGraph/sugi.subGraphs",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {}
+    },
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,

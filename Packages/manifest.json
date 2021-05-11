@@ -15,6 +15,7 @@
     "com.unity.visualscripting": "1.5.2",
     "jp.cysharp.unirx": "7.1.0",
     "jp.cysharp.unitask": "1.0.0",
+    "sugi.subgraph": "file:C:/Users/sugi-cho/source/repos/sugi-cho/AnimationCurve/Unity-ShaderGraph/sugi.subGraphs",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
     "com.unity.modules.animation": "1.0.0",

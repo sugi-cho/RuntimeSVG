@@ -1,0 +1,3 @@
+[submodule "Unity-ShaderGraph"]
+	path = Unity-ShaderGraph
+	url = https://github.com/sugi-cho/Unity-ShaderGraph.git
