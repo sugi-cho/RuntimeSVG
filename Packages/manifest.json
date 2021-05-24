@@ -12,10 +12,10 @@
     "com.unity.ugui": "1.0.0",
     "com.unity.vectorgraphics": "2.0.0-preview.16",
     "com.unity.visualeffectgraph": "11.0.0",
-    "com.unity.visualscripting": "1.5.2",
+    "com.unity.visualscripting": "1.6.1",
     "jp.cysharp.unirx": "7.1.0",
     "jp.cysharp.unitask": "1.0.0",
-    "sugi.subgraph": "file:C:/Users/sugi-cho/source/repos/sugi-cho/AnimationCurve/Unity-ShaderGraph/sugi.subGraphs",
+    "sugi.subgraph": "file:../Unity-ShaderGraph/sugi.subGraphs",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
     "com.unity.modules.animation": "1.0.0",
@@ -54,6 +54,13 @@
       "url": "https://upm-packages.dev",
       "scopes": [
         "jp.cysharp"
+      ]
+    },
+    {
+      "name": "keijiro",
+      "url": "https://registry.npmjs.com",
+      "scopes": [
+        "jp.keijiro"
       ]
     }
   ]

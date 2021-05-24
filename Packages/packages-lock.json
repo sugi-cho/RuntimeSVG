@@ -166,7 +166,7 @@
       }
     },
     "com.unity.visualscripting": {
-      "version": "1.5.2",
+      "version": "1.6.1",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -195,7 +195,7 @@
       "url": "https://upm-packages.dev"
     },
     "sugi.subgraph": {
-      "version": "file:C:/Users/sugi-cho/source/repos/sugi-cho/AnimationCurve/Unity-ShaderGraph/sugi.subGraphs",
+      "version": "file:../Unity-ShaderGraph/sugi.subGraphs",
       "depth": 0,
       "source": "local",
       "dependencies": {}

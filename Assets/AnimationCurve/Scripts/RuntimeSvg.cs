@@ -74,7 +74,13 @@ public class RuntimeSvg : MonoBehaviour
         var center = new Vector2(path.Average(v2 => v2.x), path.Average(v2 => v2.y));
         if (closed)
             path = path.Concat(new[] { path[0] }).ToArray();
-        path = path.Select(p => { p = p - center; p.y *= -1; return p; }).Distinct().ToArray();
+        path = path.Select(p =>
+        {
+            p = p - center;
+            p *= 50f / center.y;
+            p.y *= -1;
+            return p;
+        }).Distinct().ToArray();
         return path;
     }
     private void ComputeTessellationOptions(SVGParser.SceneInfo sceneInfo, int targetResolution, float multiplier, out float stepDist, out float maxCord, out float maxTangent)
@@ -112,8 +118,8 @@ public class RuntimeSvg : MonoBehaviour
         {
             var idx0 = vertList.Count;
             var x0 = uvList.Last().x;
-            var x1 = (path.Length - 1f) / strokeCount;
-            vertList.AddRange(path.Select(v2 => new Vector3(v2.x, v2.y, 300)));
+            var x1 = x0 + (path.Length - 1f) / strokeCount;
+            vertList.AddRange(path.Select(v2 => new Vector3(v2.x, v2.y, 100f)));
             uvList.AddRange(
                 Enumerable.Range(0, path.Length)
                 .Select(idx => new Vector2(Mathf.Lerp(x0, x1, idx / (path.Length - 1f)), 1f))
