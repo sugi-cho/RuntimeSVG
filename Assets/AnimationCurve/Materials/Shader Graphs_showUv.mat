@@ -33,12 +33,17 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Delta: 0.237
-    - _Scroll: 2
+    - _Amp: 0.25
+    - _Cycle: 2
+    - _Delta: 0.257
+    - _Freq: 12
+    - _Scroll: 5
     - _Sepalation: 1
-    - lineWidth: 0.00001
+    - lineWidth: 0.0000001
     - numBeams: 1024
     m_Colors:
-    - _Color: {r: 0, g: 0.66753936, b: 0.34949705, a: 0}
-    - _Scale: {r: 1, g: 1, b: 1, a: 0}
+    - _Color: {r: 0, g: 1.3333334, b: 0.69803923, a: 0}
+    - _Color0: {r: 2, g: 0, b: 0, a: 0}
+    - _Color1: {r: 0, g: 2, b: 0, a: 0}
+    - _Scale: {r: 3, g: 3, b: 2, a: 0}
   m_BuildTextureStacks: []
