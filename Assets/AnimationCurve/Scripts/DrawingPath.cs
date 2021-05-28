@@ -59,44 +59,34 @@ public class DrawingPath : MonoBehaviour
                 geo, 100f,
                 VectorUtils.Alignment.Center,
                 Vector2.zero, 128);
+            var center = VectorUtils.Bounds(segments).center;
+            transform.position = Camera.main.ScreenToWorldPoint(new Vector3(center.x, center.y, 10f));
             spriteRenderer.sprite = sprite;
         }
     }
-
-    // https://qiita.com/kwst/items/16e4877890a19826ba7f
+    
     BezierPathSegment[] Points2Segments(List<Vector2> points)
     {
         var count = points.Count;
         var segments = new BezierPathSegment[count];
         for (var i = 0; i < count; i++)
         {
-            var p = new Vector2[4];
-            if (i == 0)
-                p[0] = points[0];
-            else
-                p[0] = points[i - 1];
-            p[1] = points[i];
-            if (i == count - 1)
-            {
-                p[2] = points[count - 1];
-                p[3] = points[count - 1];
-            }
-            else if (i == count - 2)
-            {
-                p[2] = points[i + 1];
-                p[3] = points[count - 2];
-            }
-            else
-            {
-                p[2] = points[i + 1];
-                p[3] = points[i + 2];
-            }
+            var p = new[] {
+                points[(count+i-1)%count],
+                points[(count+i+0)%count],
+                points[(count+i+1)%count],
+                points[(count+i+2)%count],
+            };
+
+            var angle = Vector2.Angle(p[1] - p[0], p[2] - p[1]);
+            var t = Mathf.InverseLerp(30f, 90f, angle);
+            var val = Mathf.Lerp(6f, 36f, t);
 
             segments[i] = new BezierPathSegment
             {
-                P0 = (-p[0] + 6f * p[1] + p[2]) / 6f,
-                P1 = (p[1] + 6f * p[2] - p[3]) / 6f,
-                P2 = p[2]
+                P0 = p[1],
+                P1 = (-p[0] + val * p[1] + p[2]) / val,
+                P2 = ( p[1] + val * p[2] - p[3]) / val,
             };
         }
         return segments;
@@ -130,7 +120,7 @@ public class DrawingPath : MonoBehaviour
     {
         var ps = points.Distinct();
         foreach (var p in ps)
-            Gizmos.DrawSphere(Camera.main.ScreenToWorldPoint(new Vector3(p.x, p.y, 10f)), 0.1f);
+            Gizmos.DrawSphere(Camera.main.ScreenToWorldPoint(new Vector3(p.x, p.y, 10f)), 0.01f);
         for (var i = 0; i < simplefied.Count - 1; i++)
         {
             Gizmos.color = Color.white;
