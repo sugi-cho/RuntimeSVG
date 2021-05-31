@@ -29,7 +29,6 @@ public class DrawingPath : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("down");
             points.Clear();
         }
         if (Input.GetMouseButton(0))
@@ -38,7 +37,6 @@ public class DrawingPath : MonoBehaviour
         }
         else if (Input.GetMouseButtonUp(0))
         {
-            Debug.Log("up");
             var ps = points.Select(p => new Point(p.x, p.y)).ToArray();
             simplefied = utility.Simplify(ps, 5, false).Select(s => new Vector2((float)s.X, (float)s.Y)).ToList();
             segments = Points2Segments(simplefied);
