@@ -41,7 +41,7 @@ public class LaserMeshGenerator
         tessellateOptions.SamplingStepSize = 1.0f / (float)samplingStepDist;
         tessellateOptions.StepDistance = 1f;
 
-        var pathProperties = new PathProperties { Corners = PathCorner.Tipped, Head = PathEnding.Chop, Tail = PathEnding.Chop, Stroke = new Stroke { Color = Color.white } };
+        var pathProperties = new PathProperties { Corners = PathCorner.Tipped, Head = PathEnding.Chop, Tail = PathEnding.Chop, Stroke = new Stroke() };
 
         var shapes = GetAllShapes(sceneInfo.Scene.Root, sceneInfo.Scene.Root.Transform);
         var pathes = new List<Vector2[]>();
@@ -50,8 +50,23 @@ public class LaserMeshGenerator
             {
                 var p = TessellateBezierPath(bezier, pathProperties, tessellateOptions, s.FillTransform);
                 pathes.Add(p);
-
             }
+
+        var ps = pathes.SelectMany(p => p);
+        var min = new Vector2(ps.Select(v => v.x).Min(), ps.Select(v => v.y).Min());
+        var max = new Vector2(ps.Select(v => v.x).Max(), ps.Select(v => v.y).Max());
+        var center = (min + max) / 2f;
+        var size = max - min;
+
+        pathes = pathes.Select(p =>
+            p.Select(v =>
+            {
+                v -= center;
+                v = v / size.y * 100f;
+                v.y *= -1f;
+                return v;
+            }).ToArray()
+        ).ToList();
         var mesh = GenerateMesh(pathes);
 
         AssetDatabase.CreateAsset(mesh, AssetDatabase.GenerateUniqueAssetPath($"Assets/{Path.GetFileName(path)}.asset"));
@@ -83,18 +98,15 @@ public class LaserMeshGenerator
 
     static Vector2[] TessellateBezierPath(BezierContour bezier, PathProperties pathProperties, VectorUtils.TessellationOptions tessellateOptions, Matrix2D transform)
     {
-        Debug.Log(transform.ToString());
         Vector2[] path;
         ushort[] indeces;
         VectorUtils.TessellatePath(bezier, pathProperties, tessellateOptions, out path, out indeces);
         var closed = bezier.Closed;
-        var center = new Vector2(path.Average(v2 => v2.x), path.Average(v2 => v2.y));
         if (closed)
             path = path.Concat(new[] { path[0] }).ToArray();
         path = path.Select(p =>
         {
             p = transform * p;
-            p.y *= -1;
             return p;
         }).Distinct().ToArray();
         return path;

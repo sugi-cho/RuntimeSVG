@@ -35,9 +35,9 @@ Material:
     m_Floats:
     - _Amp: 0.2
     - _Cycle: 2
-    - _Delta: 0.326
+    - _Delta: 0.3
     - _Freq: 12
-    - _Scroll: 5
+    - _Scroll: 10.32
     - _Sepalation: 1
     - lineWidth: 0.000001
     - numBeams: 1024
