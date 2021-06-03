@@ -5,10 +5,6 @@ using System.IO;
 using UnityEngine;
 
 using Unity.VectorGraphics;
-using UniRx;
-using Unity.Collections;
-using Unity.Jobs;
-using UnityEngine.UIElements;
 
 public class RuntimeSvg : MonoBehaviour
 {
@@ -18,7 +14,6 @@ public class RuntimeSvg : MonoBehaviour
     PathProperties pathProperties;
 
     public Mesh mesh;
-    public VectorImage vectorImage;
 
     // Start is called before the first frame update
     void OnEnable()
@@ -30,10 +25,10 @@ public class RuntimeSvg : MonoBehaviour
         // Automatically compute sensible tessellation options from the
         // vector scene's bouding box and target resolution
         // from package SVGImporter.cs
-        float stepDist = 10f;
+        float stepDist;
         float samplingStepDist = 100f;
-        float maxCord = float.MaxValue;
-        float maxTangent = Mathf.PI * 0.5f;
+        float maxCord;
+        float maxTangent;
         ComputeTessellationOptions(sceneInfo, 400, 1f, out stepDist, out maxCord, out maxTangent);
         tessellateOptions = new VectorUtils.TessellationOptions();
         tessellateOptions.MaxCordDeviation = maxCord;
@@ -108,6 +103,7 @@ public class RuntimeSvg : MonoBehaviour
     void GenerateMesh(List<Vector2[]> pathes)
     {
         mesh = new Mesh();
+        mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
         var vertList = new List<Vector3> { Vector3.zero };
         var uvList = new List<Vector2> { Vector2.zero };
         var idxList = new List<int>();

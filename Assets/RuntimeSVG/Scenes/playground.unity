@@ -462,10 +462,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d579aacbd4d712a4fb4d157225dd46d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  assetpath: Assets/StreamingAssets/github.svg
+  assetpath: Assets/StreamingAssets/Ghostscript_Tiger.svg
   viewPrtOptions: 0
   mesh: {fileID: 0}
-  vectorImage: {fileID: 0}
 --- !u!4 &852635153
 Transform:
   m_ObjectHideFlags: 0
