@@ -33,17 +33,18 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - LaserIntensity: 0.5
     - _Amp: 0.2
     - _Cycle: 2
-    - _Delta: 0.3
+    - _Delta: 0.1
     - _Freq: 12
-    - _Scroll: 10.32
+    - _Scroll: 10
     - _Sepalation: 1
     - lineWidth: 0.000001
     - numBeams: 1024
     m_Colors:
     - _Color: {r: 0, g: 1.3333334, b: 0.69803923, a: 0}
-    - _Color0: {r: 2, g: 0, b: 0, a: 0}
+    - _Color0: {r: 1.9169579, g: 0.14448963, b: 0, a: 0}
     - _Color1: {r: 0, g: 2, b: 0, a: 0}
     - _Scale: {r: 1, g: 1, b: 1, a: 0}
   m_BuildTextureStacks: []

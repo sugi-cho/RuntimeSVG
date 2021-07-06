@@ -15,6 +15,7 @@ public class DrawingPath : MonoBehaviour
     SimplifyUtility utility;
     [SerializeField] BezierPathSegment[] segments;
     SpriteRenderer spriteRenderer;
+    [SerializeField] Texture tex;
 
     // Start is called before the first frame update
     void Start()
@@ -50,7 +51,7 @@ public class DrawingPath : MonoBehaviour
                     Corners = PathCorner.Round,
                 }
             };
-            path.Fill = new SolidFill() { Color = Color.red, Mode = FillMode.OddEven };
+            path.Fill = new SolidFill() { Color = Color.red, Mode = FillMode.NonZero };
             var options = MakeLineOptions();
             var geo = BuildGeometry(path, options);
             var sprite = VectorUtils.BuildSprite(
@@ -60,6 +61,8 @@ public class DrawingPath : MonoBehaviour
             var center = VectorUtils.Bounds(segments).center;
             transform.position = Camera.main.ScreenToWorldPoint(new Vector3(center.x, center.y, 10f));
             spriteRenderer.sprite = sprite;
+
+            tex = VectorUtils.RenderSpriteToTexture2D(sprite, 512, 512, spriteRenderer.material);
         }
     }
     
@@ -76,15 +79,18 @@ public class DrawingPath : MonoBehaviour
                 points[(count+i+2)%count],
             };
 
-            var angle = Vector2.Angle(p[1] - p[0], p[2] - p[1]);
-            var t = Mathf.InverseLerp(30f, 90f, angle);
-            var val = Mathf.Lerp(6f, 36f, t);
+            var angle1 = Vector2.Angle(p[1] - p[0], p[2] - p[1]);
+            var angle2 = Vector2.Angle(p[2] - p[1], p[3] - p[2]);
+            var t1 = Mathf.InverseLerp(30f, 90f, angle1);
+            var t2 = Mathf.InverseLerp(30f, 90f, angle2);
+            var val1 = Mathf.Lerp(6f, 36f, t1);
+            var val2 = Mathf.Lerp(6f, 36f, t2);
 
             segments[i] = new BezierPathSegment
             {
                 P0 = p[1],
-                P1 = (-p[0] + val * p[1] + p[2]) / val,
-                P2 = ( p[1] + val * p[2] - p[3]) / val,
+                P1 = (-p[0] + val1 * p[1] + p[2]) / val1,
+                P2 = ( p[1] + val2 * p[2] - p[3]) / val2,
             };
         }
         return segments;
