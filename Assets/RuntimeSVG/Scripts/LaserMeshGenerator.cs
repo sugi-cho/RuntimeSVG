@@ -2,12 +2,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using UnityEngine;
+
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 
 using Unity.VectorGraphics;
 
 public class LaserMeshGenerator
 {
+#if UNITY_EDITOR
     [MenuItem("Assets/Generate/Laser Mesh")]
     public static void GenerateMesh()
     {
@@ -17,19 +21,27 @@ public class LaserMeshGenerator
             Debug.Log(path);
 
             if (Path.GetExtension(path).ToLower() == ".svg")
-                GenerateMesh(path);
+            {
+                var mesh = GenerateMesh(path);
+                AssetDatabase.CreateAsset(mesh, AssetDatabase.GenerateUniqueAssetPath($"Assets/{Path.GetFileName(path)}.asset"));
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+
+                Selection.activeObject = mesh;
+            }
         }
     }
-
-    static void GenerateMesh(string path)
+    static Mesh GenerateMesh(string path)
     {
         SVGParser.SceneInfo sceneInfo;
         using (var stream = new StreamReader(path))
             sceneInfo = SVGParser.ImportSVG(stream, ViewportOptions.DontPreserve);
+        return GenerateMesh(sceneInfo);
+    }
+#endif
 
-        // Automatically compute sensible tessellation options from the
-        // vector scene's bouding box and target resolution
-        // from package SVGImporter.cs
+    public static Mesh GenerateMesh(SVGParser.SceneInfo sceneInfo)
+    {
         float stepDist;
         float samplingStepDist = 100f;
         float maxCord;
@@ -68,12 +80,7 @@ public class LaserMeshGenerator
             }).ToArray()
         ).ToList();
         var mesh = GenerateMesh(pathes);
-
-        AssetDatabase.CreateAsset(mesh, AssetDatabase.GenerateUniqueAssetPath($"Assets/{Path.GetFileName(path)}.asset"));
-        AssetDatabase.SaveAssets();
-        AssetDatabase.Refresh();
-
-        Selection.activeObject = mesh;
+        return mesh;
     }
 
     static List<Shape> GetAllShapes(SceneNode node, Matrix2D worldTransform)

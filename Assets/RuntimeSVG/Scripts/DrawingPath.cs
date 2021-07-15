@@ -62,7 +62,7 @@ public class DrawingPath : MonoBehaviour
             transform.position = Camera.main.ScreenToWorldPoint(new Vector3(center.x, center.y, 10f));
             spriteRenderer.sprite = sprite;
 
-            tex = VectorUtils.RenderSpriteToTexture2D(sprite, 512, 512, spriteRenderer.material);
+            tex = VectorUtils.RenderSpriteToTexture2D(sprite, 512, 512, spriteRenderer.material, 1, true);
         }
     }
     
