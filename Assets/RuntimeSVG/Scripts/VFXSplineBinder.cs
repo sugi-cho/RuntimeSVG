@@ -42,7 +42,9 @@ public class VFXSplineBinder : VFXBinderBase
                 var curve = new BezierCurve(knot, next);
                 return curve;
             })
-            .Where((c, idx) => idx < spline.Knots.Count() - 1 | spline.Closed);
+            .Where((c, idx) => idx < spline.Knots.Count() - 1 | spline.Closed)
+            .Select(c => (curve: c, length: CurveUtility.CalculateLength(c)))
+            .Where(c => 0 < c.length);
             return cs;
         }).ToList();
 
@@ -51,10 +53,9 @@ public class VFXSplineBinder : VFXBinderBase
         if (splineMap == null || splineMap.height != count)
             splineMap = new Texture2D(4, count, TextureFormat.RGBAFloat, false);
 
-        var lengths = bezierCurves.Select(bc => CurveUtility.CalculateLength(bc)).ToList();
-        var totalLength = lengths.Sum();
+        var totalLength = bezierCurves.Sum(bc => bc.length);
         var curveStarts = Enumerable.Range(0, count)
-            .Select(idx => lengths.Take(idx).Sum() / totalLength)
+            .Select(idx => bezierCurves.Where((bc, i) => i < idx).Sum(bc => bc.length) / totalLength)
             .ToList();
         var keyFrames = curveStarts.Select((start, idx) => new Keyframe(
             start,
@@ -68,11 +69,12 @@ public class VFXSplineBinder : VFXBinderBase
         var colors = new List<Color>();
         for (var i = 0; i < count; i++)
         {
-            var bc = bezierCurves[i];
+            var bc = bezierCurves[i].curve;
+            var length = bezierCurves[i].length;
             colors.Add(new Color(bc.P0.x, bc.P0.y, bc.P0.z, curveStarts[i]));
-            colors.Add(new Color(bc.P1.x, bc.P1.y, bc.P1.z, lengths[i]));
+            colors.Add(new Color(bc.P1.x, bc.P1.y, bc.P1.z, length));
             colors.Add(new Color(bc.P2.x, bc.P2.y, bc.P2.z, totalLength));
-            colors.Add(new Color(bc.P3.x, bc.P3.y, bc.P3.z, 1));
+            colors.Add(new Color(bc.P3.x, bc.P3.y, bc.P3.z, 1f / (length / totalLength)));
         }
         splineMap.name = Target.name + "_SplineMap";
         splineMap.filterMode = FilterMode.Point;
